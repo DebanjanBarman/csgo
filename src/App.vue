@@ -1,32 +1,152 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app id="inspire">
+    <v-navigation-drawer
+        app
+        clipped
+        color="primary"
+    >
+      <v-list class="my-6" style="color: #fff">
+        <v-list-item
+            v-for="item in items"
+            :key="item.text"
+            link
+            class="px-6 py-1"
+            :to="item.link"
+            color="#1DA1F2"
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ item.text }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+      </v-list>
+
+
+      <template v-slot:append>
+        <div class="text-center">
+          <v-menu
+              v-model="menu"
+              :close-on-content-click="false"
+              offset-y
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <div class="pa-4">
+                <v-btn
+                    outlined
+                    block
+                    rounded
+                    v-bind="attrs"
+                    v-on="on"
+                    class="pa-4"
+                    style="text-transform: capitalize"
+                >
+                  <v-icon left>{{ mdiAccountOutline }}</v-icon>
+                  Debanjan Barman
+                </v-btn>
+              </div>
+
+            </template>
+
+            <v-card outlined rounded elevation="8">
+              <v-list color="primary">
+                <v-list-item>
+                  <v-list-item-avatar>
+                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+                  </v-list-item-avatar>
+
+                  <v-list-item-content>
+                    <v-list-item-title>Debanjan Barman</v-list-item-title>
+                    <v-list-item-subtitle>@DebanjanBarman</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+
+              <v-divider></v-divider>
+
+              <v-list color="primary">
+                <v-list-item @click="logOut">
+                  <v-list-item-icon>
+                    <v-icon>{{ mdiLogout }}</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title> Logout</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+
+            </v-card>
+          </v-menu>
+        </div>
+      </template>
+
+    </v-navigation-drawer>
+
+    <v-bottom-navigation
+        horizontal
+        fixed
+        class="hidden-lg-and-up justify-space-around"
+    >
+      <v-btn text v-for="item in items" :key="item.text" :to="item.link">
+        <span> {{ item.text }}</span>
+        <v-icon>{{ item.icon }}</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+
+    <v-main>
+      <v-container fluid style="background-color:primary">
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import {mdiHomeOutline, mdiGamepadVariantOutline, mdiBellOutline, mdiAccountOutline, mdiLogout} from '@mdi/js'
 
-#nav {
-  padding: 30px;
-}
+export default {
+  props: {
+    source: String
+  },
+  components: {},
+  data: () => ({
+    drawer: null,
+    items: [
+      {
+        icon: mdiHomeOutline,
+        text: 'Home',
+        link: '/'
+      },
+      {
+        icon: mdiGamepadVariantOutline,
+        text: 'Tournaments',
+        link: '/matches'
+      },
+      {
+        icon: mdiBellOutline,
+        text: 'Notification',
+        link: '/notification'
+      }
+    ],
+    mdiAccountOutline,
+    mdiLogout,
+    menu: false,
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+  }),
+  methods: {
+    logOut() {
+      console.log('logged out')
+      this.menu = false
+      if (this.$route.fullPath !== '/') this.$router.push('/')
+    }
+  },
+  created() {
+    this.$vuetify.theme.dark = true
+  }
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>
