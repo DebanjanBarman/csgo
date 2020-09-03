@@ -1,10 +1,21 @@
 <template>
   <v-app id="inspire">
+
     <v-navigation-drawer
+        permanent
         app
         clipped
         color="primary"
     >
+      <v-list-item to="/">
+        <v-list-item-content>
+          <v-list-item-title class="title white--text" style="text-align: center">
+            CSGO PRO
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+
       <v-list class="my-6" style="color: #fff">
         <v-list-item
             v-for="item in items"
@@ -98,7 +109,7 @@
     </v-bottom-navigation>
 
     <v-main>
-      <v-container fluid style="background-color:primary">
+      <v-container>
         <router-view></router-view>
       </v-container>
     </v-main>
