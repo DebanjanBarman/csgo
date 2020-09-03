@@ -97,17 +97,6 @@
 
     </v-navigation-drawer>
 
-    <v-bottom-navigation
-        horizontal
-        fixed
-        class="hidden-lg-and-up justify-space-around"
-    >
-      <v-btn text v-for="item in items" :key="item.text" :to="item.link">
-        <span> {{ item.text }}</span>
-        <v-icon>{{ item.icon }}</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
-
     <v-main>
       <v-container>
         <router-view></router-view>
